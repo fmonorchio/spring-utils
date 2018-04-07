@@ -4,3 +4,42 @@
  * This is a general purpose Gradle build.
  * Learn how to create Gradle builds at https://guides.gradle.org/creating-new-gradle-builds/
  */
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+group = 'com.fmonorchio'
+version = '0.0.1'
+
+sourceCompatibility = 1.8
+
+buildscript {
+    ext {
+        springBootVersion        = '2.0.0.RELEASE'
+        apacheCommonsLangVersion = '3.7'
+    }
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+repositories {
+    jcenter()
+}
+
+
+dependencies {
+    compile('org.springframework.boot:spring-boot-starter-validation')
+    compile('org.springframework.boot:spring-boot-starter-aop')
+    compile("org.apache.commons:commons-lang3:${apacheCommonsLangVersion}")
+    compile group: 'org.apache.commons', name: 'commons-collections4', version: '4.1'
+
+    compileOnly('org.projectlombok:lombok')
+
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+}
