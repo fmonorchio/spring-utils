@@ -9,20 +9,31 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import javax.validation.NoProviderFoundException;
 import javax.validation.ValidationException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.IntStream;
+
+import static java.util.Objects.isNull;
 
 @Data
 @Aspect
 @Component
 public final class CheckParametersInterceptor {
 
-    @Autowired
+    @Autowired(required = false)
     private List<Validator> validators;
+
+    @PostConstruct
+    public void init() {
+        if (isNull(validators)) {
+            validators = new LinkedList<>();
+        }
+    }
 
     @Before("@annotation(CheckParameters)")
     public void intercept(JoinPoint point) {
